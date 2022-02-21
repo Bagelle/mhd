@@ -1,6 +1,13 @@
 from heapq import heappop, heappush, heapify
 import random
 
+# farby ciest spajaju aj zastavky bez ich farby
+# cena nodeov vymazat
+# mena nodeov: list, paralelny k node
+# dijkstra
+# GUI: full screen, nazov zastavky sa zobrazi po kliknuti
+# save map
+
 
 class Node:
     NodeID = 0
