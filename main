@@ -1,31 +1,51 @@
 import tkinter
 from tkinter.constants import LEFT, RIGHT
-from MHD import Graph
+from mhd import Graph
 
 form = tkinter.Tk()
 form.title("Graph as list of neighbours")
-canvas = tkinter.Canvas(form, width=600, height=400, bg='white')
+
+canvas = tkinter.Canvas(form, width = '1000', height = '600', bg='white')
 canvas.pack(side = RIGHT)
 
-label4 = tkinter.Label(text = 'red')
-entry4 = tkinter.Entry(form)
+label0 = tkinter.Label(text = 'Name of the stop')
+entry0 = tkinter.Entry(form)
 
-label5 = tkinter.Label(text = 'blue')
-entry5 = tkinter.Entry(form)
+var1 = tkinter.IntVar()
+var2 = tkinter.IntVar()
+var3 = tkinter.IntVar()
 
-label6 = tkinter.Label(text = 'green')
-entry6 = tkinter.Entry(form)
+c1 = tkinter.Checkbutton(form, text='red',variable=var1, onvalue=1, offvalue=0, command=lambda:insert_Node())
+c2 = tkinter.Checkbutton(form, text='blue',variable=var2, onvalue=1, offvalue=0, command=lambda:insert_Node())
+c3 = tkinter.Checkbutton(form, text='green',variable=var3, onvalue=1, offvalue=0, command=lambda:insert_Node())
 
-label4.pack()
-entry4.pack()
+label0.pack()
+entry0.pack()
+c1.pack()
+c2.pack()
+c3.pack()
 
-label5.pack()
-entry5.pack()
+# label4 = tkinter.Label(text = 'red')
+# entry4 = tkinter.Entry(form)
 
-label6.pack()
-entry6.pack()
+# label5 = tkinter.Label(text = 'blue')
+# entry5 = tkinter.Entry(form)
 
-label7 = tkinter.Label(text = 'insert color of road')
+# label6 = tkinter.Label(text = 'green')
+# entry6 = tkinter.Entry(form)
+
+
+
+# label4.pack()
+# entry4.pack()
+
+# label5.pack()
+# entry5.pack()
+
+# label6.pack()
+# entry6.pack()
+
+label7 = tkinter.Label(text = 'Insert color of road')
 label7.pack()
 entry7 = tkinter.Entry(form)
 entry7.pack()
@@ -59,7 +79,7 @@ def runDijkstra(start, end):
 
 
 def insert_Node(event):
-    graph.insert(event.x, event.y, entry4.get(), entry5.get(), entry6.get())
+    graph.insert(event.x, event.y, var1.get(), var2.get(), var3.get())
     graph.draw(canvas)
 
 
@@ -93,5 +113,3 @@ canvas.bind("<Button-2>", remove)
 canvas.bind("<Button-3>", connect_node)
 
 canvas.mainloop()
-
-
