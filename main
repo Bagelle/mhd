@@ -15,9 +15,9 @@ var1 = tkinter.IntVar()
 var2 = tkinter.IntVar()
 var3 = tkinter.IntVar()
 
-c1 = tkinter.Checkbutton(form, text='red',variable=var1, onvalue=1, offvalue=0, command=lambda:insert_Node())
-c2 = tkinter.Checkbutton(form, text='blue',variable=var2, onvalue=1, offvalue=0, command=lambda:insert_Node())
-c3 = tkinter.Checkbutton(form, text='green',variable=var3, onvalue=1, offvalue=0, command=lambda:insert_Node())
+c1 = tkinter.Checkbutton(form, text='red',variable=var1, onvalue=1, offvalue=0, command=lambda:insert_Node)
+c2 = tkinter.Checkbutton(form, text='blue',variable=var2, onvalue=1, offvalue=0, command=lambda:insert_Node)
+c3 = tkinter.Checkbutton(form, text='green',variable=var3, onvalue=1, offvalue=0, command=lambda:insert_Node)
 
 label0.pack()
 entry0.pack()
