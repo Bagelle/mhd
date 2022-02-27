@@ -1,136 +1,108 @@
-from heapq import heappop, heappush, heapify
-import random
+import tkinter
+from tkinter.constants import LEFT, RIGHT
+from mhd import Graph
 
-# farby ciest spajaju aj zastavky bez ich farby
-# cena nodeov vymazat
-# mena nodeov: list, paralelny k node
-# dijkstra
-# GUI: full screen, nazov zastavky sa zobrazi po kliknuti
-# save map
+form = tkinter.Tk()
+form.title("MHD")
 
+canvas = tkinter.Canvas(form, width = '1000', height = '600', bg='white')
+canvas.pack(side = RIGHT)
 
-class Node:
-    NodeID = 0
+label0 = tkinter.Label(text = 'Name of the stop')
+entry0 = tkinter.Entry(form)
+label0.pack()
+entry0.pack()
 
-    def __init__(self, x, y, name, r, b, g):
-        self.x = x
-        self.y = y
-        self.neighbours = [] # [[next node, price, color],[ , , ], ...]  #tu som dodala name
-        self.name = name
-        self.color=[r, b, g]
-        self.id = Node.NodeID
-        self.price = 1000  #zastavka zdrzi autobus na minutu    ... kludne to zvacste / zmente     ...bude to v Dijkstre
-        self.prev = None  #len pri hladani cesty ...nech sa nevraciame
-        Node.NodeID += 1
-        self.visited = False
+label4 = tkinter.Label(text = 'Insert color of the stop')
+label4.pack()
 
-    def add(self, node, value, r, b, g, name):
-        self.neighbours.append([node, value, r, b, g, name])
-        node.neighbours.append([self, value, r, b, g, name])
+var1 = tkinter.IntVar()
+var2 = tkinter.IntVar()
+var3 = tkinter.IntVar()
 
-    def remove(self, node):
-        for i in self.neighbours:
-            if self.neighbours[i][0] == node:    #if i[0] == node:  --> does the same
-                self.neighbours.remove(self.neighbours[i]) #self.neighbours[i] == i
-                node.neighbours.remove([self, i[1]])
-                break
-    def __lt__(self, other):
-        return self.price < other.price
+c1 = tkinter.Checkbutton(form, text='red',variable=var1, onvalue=1, offvalue=0, command=lambda:insert_Node)
+c2 = tkinter.Checkbutton(form, text='blue',variable=var2, onvalue=1, offvalue=0, command=lambda:insert_Node)
+c3 = tkinter.Checkbutton(form, text='green',variable=var3, onvalue=1, offvalue=0, command=lambda:insert_Node)
 
-class Graph:
-    def __init__(self):
-        self.nodes = []
-        self.visited = []
-        self.prestupy = 0
-        self.color = 0
+c1.pack()
+c2.pack()
+c3.pack()
 
-    def insert(self, x, y, name, r, b, g):
-        self.nodes.append(Node(x, y, name, r, b, g))
+label5 = tkinter.Label(text = 'Insert color of the road')
+label5.pack()
 
-    def connect(self, nodea, nodeb, value, r, b, g, name):
-        nodea.add(nodeb, value, r, b, g, name)
+var4 = tkinter.IntVar()
+var5 = tkinter.IntVar()
+var6 = tkinter.IntVar()
 
-    def remove(self, node):
-        print(node.neighbours)
-        while node.neighbours != []:
-            node.remove(node.neighbours[0])
-            print(node.neighbours)
-        self.nodes.remove(node)
+c4 = tkinter.Checkbutton(form, text='red',variable=var4, onvalue=1, offvalue=0, command=lambda:connect_node)
+c5 = tkinter.Checkbutton(form, text='blue',variable=var5, onvalue=1, offvalue=0, command=lambda:connect_node)
+c6 = tkinter.Checkbutton(form, text='green',variable=var6, onvalue=1, offvalue=0, command=lambda:connect_node)
 
-    def dijkstra(self, start, end, canvas):
-        for i in self.nodes:
-            i.price = 100000
-            i.prev = None
-        l = []
-        for i in self.nodes:
-            heappush(l, i)
-        start.price = 0
+c4.pack()
+c5.pack()
+c6.pack()
 
-        while l:
-            for pair in l[0].neighbours:
-                if pair[0].price > int(pair[1]) + l[0].price:
-                    pair[0].price = int(pair[1]) + l[0].price
-                    pair[0].prev = l[0]
-            heappop(l)
+label1 = tkinter.Label(text = "Enter time between stops")
+label1.pack()
+entry1 = tkinter.Entry(form)
+entry1.pack()
 
-        temp = end
-        end.prev = 101
-        i = 102
-        while temp != start:
-            zoznam = temp.neighbours
-            for next in temp.neigbours:
-                if next.color[self.color]:
-                    zoznam.append(next)
-            if zoznam == []:
-                zoznam = temp.neigbours
-            for next in zoznam:
-                if temp.price == int(next[1]) + next[0].price:
-                    next[0].prev = int(i)
-                    i +=1
-                    temp = next[0]
-                    break
-                if next == zoznam[-1]:
-                    for next in temp.neigbours:
-                        if temp.price == int(next[1]) + next[0].price:
-                            next[0].prev = int(i)
-                            i += 1
-                            temp = next[0]
-                            break
+label2 = tkinter.Label(text = "Enter start of the path")
+label2.pack()
+entry2 = tkinter.Entry(form)
+entry2.pack()
+
+label3 = tkinter.Label(text = "Enter end of the path")
+label3.pack()
+entry3 = tkinter.Entry(form)
+entry3.pack()
 
 
-        self.draw(canvas)
+button1 = tkinter.Button(text = 'Dijkstra', bd = "3px", command = lambda:runDijkstra(int(entry2.get()), int(entry3.get())))
+button1.pack()
 
 
-
-    def draw(self, canvas):
-        canvas.delete("all")
-        for i in self.nodes:
-            canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20)
-            if i.color[0] == 1: 
-                canvas.create_oval(i.x - 24, i.y - 24, i.x + 24, i.y + 24, outline = 'red')
-                canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
-            if i.color[1] == 1: 
-                canvas.create_oval(i.x - 22, i.y - 22, i.x + 22, i.y + 22, outline = 'blue')
-                canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
-            if i.color[2] == 1: 
-                canvas.create_oval(i.x - 26, i.y - 26, i.x + 26, i.y + 26, outline = 'green')
-                canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
-            canvas.create_text(i.x, i.y - 20, text=i.name, font="Arial 11 bold")
-            canvas.create_text(i.x, i.y - 5, text=i.id, font="Arial 11 bold")
-            canvas.create_text(i.x, i.y + 10, text=i.price, font="Arial 11 bold")
+graph = Graph()
+marked = None
 
 
-            if type(i.prev) == int:
-                canvas.create_oval(i.x - 21, i.y - 21, i.x + 21, i.y + 21, outline = 'blue')
-            for j in i.neighbours:
-                # canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='grey')
-                if j[2]== 1:
-                    canvas.create_line(i.x+2, i.y, j[0].x+2, j[0].y, fill='red')
-                if j[3]== 1:
-                    canvas.create_line(i.x+4, i.y, j[0].x+4, j[0].y, fill='blue')
-                if j[4]== 1:
-                    canvas.create_line(i.x-2, i.y, j[0].x-2, j[0].y, fill='green')
-                canvas.create_text((i.x + j[0].x) / 2, (i.y + j[0].y) / 2, text=j[1])
-                if type(i.prev) == int and type(j[0].prev) == int:
-                    if 1 >= i.prev - j[0].prev >= -1:
-                        canvas.create_line(i.x, i.y+1, j[0].x, j[0].y+1, fill='blue')
+def runDijkstra(start, end):
+    graph.dijkstra(graph.nodes[start], graph.nodes[end], canvas)
+
+
+def insert_Node(event):
+    graph.insert(event.x, event.y, entry0.get(), var1.get(), var2.get(), var3.get())
+    graph.draw(canvas)
+
+
+def connect_node(event):
+    global marked
+    for node in graph.nodes:
+        if event.x - 20 < node.x <= event.x + 20 and event.y - 20 < node.y <= event.y + 20:
+            if marked == None:
+                marked = node
+            else:
+                if marked == node:
+                    pass
+                else:
+                    value = entry1.get()
+                    if value == '':
+                        value = int(0)
+                    graph.connect(node, marked, value, var4.get(), var5.get(), var6.get(), entry0.get())
+                    marked = None
+                    graph.draw(canvas)
+
+
+def remove(event):
+    for node in graph.nodes:
+        if event.x - 20 < node.x <= event.x + 20 and event.y - 20 < node.y <= event.y + 20:
+            graph.remove(node)
+            graph.draw(canvas)
+            break
+
+canvas.bind("<Button-1>", insert_Node)
+canvas.bind("<Button-2>", remove)
+canvas.bind("<Button-3>", connect_node)
+
+canvas.mainloop()
