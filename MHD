@@ -105,13 +105,13 @@ class Graph:
         canvas.delete("all")
         for i in self.nodes:
             canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20)
-            if i.color[0] == 'True':
+            if i.color[0] == 1:
                 canvas.create_oval(i.x - 24, i.y - 24, i.x + 24, i.y + 24, outline = 'red')
                 canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
-            if i.color[1] == 'True':
+            if i.color[1] == 1:
                 canvas.create_oval(i.x - 22, i.y - 22, i.x + 22, i.y + 22, outline = 'blue')
                 canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
-            if i.color[2] == 'True':
+            if i.color[2] == 1:
                 canvas.create_oval(i.x - 26, i.y - 26, i.x + 26, i.y + 26, outline = 'green')
                 canvas.create_oval(i.x - 20, i.y - 20, i.x + 20, i.y + 20, outline = 'white')
             canvas.create_text(i.x, i.y - 7, text=i.id, font="Arial 11 bold")
