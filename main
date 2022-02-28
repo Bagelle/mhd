@@ -1,4 +1,5 @@
 import tkinter
+import pickle
 from tkinter.constants import LEFT, RIGHT
 from mhd import Graph
 
@@ -60,11 +61,27 @@ entry3.pack()
 
 
 button1 = tkinter.Button(text = 'Dijkstra', bd = "3px", command = lambda:runDijkstra(int(entry2.get()), int(entry3.get())))
+button2 = tkinter.Button(text = 'Dump', bd = "3px", command = lambda:dump())
+button3 = tkinter.Button(text = 'Load', bd = "3px", command = lambda:load())
 button1.pack()
+button2.pack()
+button3.pack()
 
 
 graph = Graph()
 marked = None
+
+def dump():
+    with open("graph.pkl", "wb") as f:
+        pickle.dump(graph, f)
+        f.close()
+
+def load():
+    global graph
+    with open("graph.pkl", "rb") as f:
+        graph = pickle.load(f)
+        f.close()
+    graph.draw(canvas)
 
 
 def runDijkstra(start, end):
