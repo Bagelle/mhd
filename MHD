@@ -1,12 +1,16 @@
 from heapq import heappop, heappush, heapify
 import random
 
-# farby ciest spajaju aj zastavky bez ich farby
-# cena nodeov vymazat
-# mena nodeov: list, paralelny k node
+# farby ciest spajaju aj zastavky bez ich farby...mozno nemusime riesit
+# cena nodeov vymazat, id nodu vymazat, cena cesty vymazat... trz je to na checknutie
+# mena nodeov: list, paralelny k node, asi ani netreba, staci sa pytat na node.name(), to ptm treba zmenit v dijkstre, ze hladat podla name nie podla id
 # dijkstra
-# GUI: full screen, nazov zastavky sa zobrazi po kliknuti
-# save map
+# GUI: 
+#   full screen...asi staci
+#   nazov zastavky nad alebo v obdlzniku...asi nad, aby ked sa kreslia lines ho neprekrili
+#   zhrubsit lines
+# save/load map...done
+
 
 
 class Node:
