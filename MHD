@@ -125,11 +125,11 @@ class Graph:
             for j in i.neighbours:
                 # canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='grey')
                 if j[2]== 1:
-                    canvas.create_line(i.x+2, i.y, j[0].x+2, j[0].y, fill='red')
+                    canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='red')
                 if j[3]== 1:
-                    canvas.create_line(i.x+4, i.y, j[0].x+4, j[0].y, fill='blue')
+                    canvas.create_line(i.x+2, i.y+2, j[0].x+2, j[0].y+2, fill='blue')
                 if j[4]== 1:
-                    canvas.create_line(i.x-2, i.y, j[0].x-2, j[0].y, fill='green')
+                    canvas.create_line(i.x-2, i.y-2, j[0].x-2, j[0].y-2, fill='green')
                 canvas.create_text((i.x + j[0].x) / 2, (i.y + j[0].y) / 2, text=j[1])
                 if type(i.prev) == int and type(j[0].prev) == int:
                     if 1 >= i.prev - j[0].prev >= -1:
