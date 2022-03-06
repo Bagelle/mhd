@@ -60,7 +60,7 @@ entry3 = tkinter.Entry(form)
 entry3.pack()
 
 
-button1 = tkinter.Button(text = 'Dijkstra', bd = "3px", command = lambda:runDijkstra(int(entry2.get()), int(entry3.get())))
+button1 = tkinter.Button(text = 'Dijkstra', bd = "3px", command = lambda:runDijkstra(entry2.get(), entry3.get()))
 button2 = tkinter.Button(text = 'Dump', bd = "3px", command = lambda:dump())
 button3 = tkinter.Button(text = 'Load', bd = "3px", command = lambda:load())
 button1.pack()
@@ -85,7 +85,15 @@ def load():
 
 
 def runDijkstra(start, end):
-    graph.dijkstra(graph.nodes[start], graph.nodes[end], canvas)
+    st = None
+    en = None
+    for node in graph.nodes:
+        if node.name == start:
+            st = node
+        if node.name == end:
+            en = node
+
+    graph.dijkstra(st, en, canvas)
 
 
 def insert_Node(event):
@@ -96,7 +104,7 @@ def insert_Node(event):
 def connect_node(event):
     global marked
     for node in graph.nodes:
-        if event.x - 20 < node.x <= event.x + 20 and event.y - 20 < node.y <= event.y + 20:
+        if event.x - 9 < node.x <= event.x + 9 and event.y - 9 < node.y <= event.y + 9:
             if marked == None:
                 marked = node
             else:
