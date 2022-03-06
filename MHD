@@ -1,5 +1,6 @@
 from heapq import heappop, heappush, heapify
 import random
+from tkinter import messagebox
 
 # farby ciest spajaju aj zastavky bez ich farby...mozno nemusime riesit
 # remove nodu negunguje ak uz ho spaja cesta s inym nodeom...akoze podobne nemusime riesit...prirorita je asi dijkstra a vizual ptm mozeme toto doriesit
@@ -54,10 +55,33 @@ class Graph:
         self.color = 0
 
     def insert(self, x, y, name, r, b, g):
-        self.nodes.append(Node(x, y, name, r, b, g))
+        if r or b or g:
+            self.nodes.append(Node(x, y, name, r, b, g))
+        else:
+            messagebox.showerror("Colour Error", "Please select a colour.")
 
     def connect(self, nodea, nodeb, value, r, b, g, name):
-        nodea.add(nodeb, value, r, b, g, name)
+        colours1=0
+        colours2=0
+        colours3=0
+        for colour in nodea.color:
+            if colour == 1:
+                colours1 +=1
+        for colour in nodeb.color:
+            if colour == 1:
+                colours2+=1
+        if r==1:
+            colours3+=1
+        if b==1:
+            colours3+=1
+        if g==1:
+            colours3+=1
+        if colours1<colours3 or colours2<colours3:
+            messagebox.showerror("Colour Error", "Path has too many colours.")
+        elif (nodea.color[0] == r or nodea.color[1]==b or nodea.color[2]==g) and (nodeb.color[0]==r or nodeb.color[1]==b or nodeb.color[2]==g):
+            nodea.add(nodeb, value, r, b, g, name)
+        else:
+            messagebox.showerror("Colour Error", "Stops are not of the selected line colour.")
 
     def remove(self, node):
         print(node.neighbours)
@@ -82,7 +106,7 @@ class Graph:
                     pair[0].prev = l[0]
             heappop(l)
 
-        temp = end
+        '''temp = end
         end.prev = 101
         i = 102
         while temp != start:
@@ -104,12 +128,17 @@ class Graph:
                             next[0].prev = int(i)
                             i += 1
                             temp = next[0]
-                            break
+                            break'''
 
 
         self.draw(canvas)
+        self.drawPath(end, canvas)
 
-
+    def drawPath(self, end, canvas):
+        node=end
+        while node.prev!=None:
+            canvas.create_line(node.x, node.y, node.prev.x, node.prev.y, fill='blue', width=2)
+            node=node.prev
 
     def draw(self, canvas):
         canvas.delete("all")
