@@ -2,18 +2,6 @@ from heapq import heappop, heappush, heapify
 import random
 from tkinter import messagebox
 
-# farby ciest spajaju aj zastavky bez ich farby...mozno nemusime riesit
-# remove nodu negunguje ak uz ho spaja cesta s inym nodeom...akoze podobne nemusime riesit...prirorita je asi dijkstra a vizual ptm mozeme toto doriesit
-# cena nodeov vymazat, id nodu vymazat, cena cesty vymazat... trz je to na checknutie
-# mena nodeov: list, paralelny k node, asi ani netreba, staci sa pytat na node.name(), to ptm treba zmenit v dijkstre, ze hladat podla name nie podla id
-# dijkstra
-# GUI:
-#   full screen...asi staci
-#   nazov zastavky nad alebo v obdlzniku...asi nad, aby ked sa kreslia lines ho neprekrili
-#   zhrubsit lines
-# save/load map...done
-
-
 
 class Node:
     NodeID = 0
@@ -146,18 +134,19 @@ class Graph:
     def drawPath(self, end, canvas):
         node=end
         while node.prev!=None:
-            canvas.create_line(node.x, node.y, node.prev.x, node.prev.y, fill='blue', width=2)
+            canvas.create_line(node.x, node.y, node.prev.x, node.prev.y, fill='black', width=6)
+            canvas.create_line(node.x, node.y, node.prev.x, node.prev.y, fill='yellow', width=2)
             node=node.prev
 
     def draw(self, canvas):
         canvas.delete("all")
         for i in self.nodes:
             if i.color[0] == 1:
-                canvas.create_oval(i.x - 11, i.y - 11, i.x + 11, i.y + 11, outline = 'red')
+                canvas.create_oval(i.x - 11, i.y - 11, i.x + 11, i.y + 11, outline = 'red', width=3)
             if i.color[1] == 1:
-                canvas.create_oval(i.x - 9, i.y - 9, i.x + 9, i.y + 9, outline = 'blue')
+                canvas.create_oval(i.x - 9, i.y - 9, i.x + 9, i.y + 9, outline = 'blue', width=3)
             if i.color[2] == 1:
-                canvas.create_oval(i.x - 13, i.y - 13, i.x + 13, i.y + 13, outline = 'green')
+                canvas.create_oval(i.x - 13, i.y - 13, i.x + 13, i.y + 13, outline = 'green', width=3)
             canvas.create_text(i.x, i.y - 20, text=i.name, font="Arial 11 bold")
 
 
@@ -166,12 +155,12 @@ class Graph:
             for j in i.neighbours:
                 # canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='grey')
                 if j[2]== 1:
-                    canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='red')
+                    canvas.create_line(i.x, i.y, j[0].x, j[0].y, fill='red', width=3)
                 if j[3]== 1:
-                    canvas.create_line(i.x+2, i.y+2, j[0].x+2, j[0].y+2, fill='blue')
+                    canvas.create_line(i.x+2, i.y+2, j[0].x+2, j[0].y+2, fill='blue', width=3)
                 if j[4]== 1:
-                    canvas.create_line(i.x-2, i.y-2, j[0].x-2, j[0].y-2, fill='green')
+                    canvas.create_line(i.x-2, i.y-2, j[0].x-2, j[0].y-2, fill='green', width=3)
                 canvas.create_text((i.x + j[0].x) / 2, (i.y + j[0].y) / 2, text=j[1])
                 if type(i.prev) == int and type(j[0].prev) == int:
                     if 1 >= i.prev - j[0].prev >= -1:
-                        canvas.create_line(i.x, i.y+1, j[0].x, j[0].y+1, fill='blue')
+                        canvas.create_line(i.x, i.y+1, j[0].x, j[0].y+1, fill='blue', width=3)
